@@ -1,5 +1,5 @@
 # JAVA_HOME is set to C:\Java\jdk-14.0.1 for me and MINGW64_HOME is set to C:\MinGW\mingw64 for me
-
+# Also, I'm doing this in Makefile because my IDE's aren't very fond of doing native C++ implementation (understandably)
 # NATIVE
 _NATIVE_DIR := ./src/native
 _SRC_DIRS := $(_NATIVE_DIR)/src
@@ -11,7 +11,7 @@ INC_DIRS := $(foreach dir, $(_LOCAL_INC_DIRS), -I$(dir)) $(foreach dir, $(_GLOBA
 
 TARGET_NAME := native
 TARGET_EXTENSION := dll
-TARGET_DIRECTORY := $(_NATIVE_DIR)/out
+TARGET_DIRECTORY := ./out/native
 
 CC := g++
 ARGS := -shared
@@ -20,7 +20,7 @@ ARGS := -shared
 _JAVA_SRC_DIRS := ./src/Ssuper ./src/Ssuper/test
 JAVA_SRC_FILES := $(foreach dir, $(_JAVA_SRC_DIRS), $(wildcard $(dir)/*.java))
 
-JAVA_OUT_DIR :=  ./out
+JAVA_OUT_DIR :=  ./out/Ssuper
 
 JAVAC_ARGS := -h $(_NATIVE_DIR)/inc
 

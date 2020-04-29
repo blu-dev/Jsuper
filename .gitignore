@@ -1,5 +1,6 @@
-#Copied and pasted from https://github.com/github/gitignore C++.gitignore and Java.gitignore
+*.bat
 
+#Copied and pasted from https://github.com/github/gitignore C++.gitignore and Java.gitignore
 # Compiled class file
 *.class
 
