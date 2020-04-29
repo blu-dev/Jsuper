@@ -1,3 +1,5 @@
+# JAVA_HOME is set to C:\Java\jdk-14.0.1 for me and MINGW64_HOME is set to C:\MinGW\mingw64 for me
+
 # NATIVE
 _NATIVE_DIR := ./src/native
 _SRC_DIRS := $(_NATIVE_DIR)/src
