@@ -10,6 +10,7 @@ struct pConsole {
 	HANDLE mOutput;
 	HANDLE mError;
 	CONSOLE_SCREEN_BUFFER_INFO* mInfo;
+	inline void update(void) {GetConsoleScreenBufferInfo(mOutput, mInfo);}
 };
 
 #endif

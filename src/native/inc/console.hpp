@@ -16,6 +16,7 @@ public:
 	~Console(void);
 
 	void setPosition(short x, short y);
+	void getPosition(short& x, short& y);
 };
 
 #endif
