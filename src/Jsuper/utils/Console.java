@@ -3,42 +3,46 @@ package jsuper.utils;
 // All native methods are private in case I decide to implement multi-console editing later on, keeping the handles away from the user
 
 public class Console {
-	// A basic coordinate class designed to work with the native implementation only
-	public class Coordinate {
-		private short x;
-		private short y;
-		private void setX(short pos) {x = pos;}
-		private void setY(short pos) {y = pos;}
-		public Coordinate() {}
-		public short getX() {return x;}
-		public short getY() {return y;}
-	}
-
-
 	private native void init();
 	private native void setCursorPosition(short x, short y);
 	private native Coordinate getCursorPosition();
 	private native Coordinate getConsoleSize();
 	private native Coordinate getFirstViewableCoordinate();
 
+	private Coordinate cursorPosition;
+	private Coordinate size;
+	private Coordinate startPosition;
+
+	private void update() {
+		setCursorPosition(cursorPosition.getX(), cursorPosition.getY());
+	}
+
 	public Console() {
 		init();
+		query();
 	}
 
-	public void setCoordinates(short x, short y) {
-		setCursorPosition(x, y);
+	public void query() {
+		cursorPosition = getCursorPosition();
+		size = getConsoleSize();
+		startPosition = getFirstViewableCoordinate();
 	}
 
-	public Coordinate getCoordinates() {
-		return getCursorPosition();
+	public void setCursor(Coordinate pos) {
+		cursorPosition = pos;
+		update();
+	}
+
+	public Coordinate getCursor() {
+		return cursorPosition;
 	}
 
 	public Coordinate getSize() {
-		return getConsoleSize();
+		return size;
 	}
 
-	public Coordinate getStartCoordinate() {
-		return getFirstViewableCoordinate();
+	public Coordinate getStart() {
+		return startPosition;
 	}
 
 	static {

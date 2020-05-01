@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL Java_jsuper_utils_Console_setCursorPosition
 /*
  * Class:     jsuper_utils_Console
  * Method:    getCursorPosition
- * Signature: ()Ljsuper/utils/Console/Coordinate;
+ * Signature: ()Ljsuper/utils/Coordinate;
  */
 JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getCursorPosition
   (JNIEnv *, jobject);
@@ -34,7 +34,7 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getCursorPosition
 /*
  * Class:     jsuper_utils_Console
  * Method:    getConsoleSize
- * Signature: ()Ljsuper/utils/Console/Coordinate;
+ * Signature: ()Ljsuper/utils/Coordinate;
  */
 JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getConsoleSize
   (JNIEnv *, jobject);
@@ -42,7 +42,7 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getConsoleSize
 /*
  * Class:     jsuper_utils_Console
  * Method:    getFirstViewableCoordinate
- * Signature: ()Ljsuper/utils/Console/Coordinate;
+ * Signature: ()Ljsuper/utils/Coordinate;
  */
 JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate
   (JNIEnv *, jobject);
