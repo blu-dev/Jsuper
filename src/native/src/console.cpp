@@ -1,4 +1,4 @@
-#include "Ssuper_utils_Console.h"
+#include "jsuper_utils_Console.h"
 #include "console.hpp"
 #include "private/pconsole.hpp"
 
@@ -9,18 +9,18 @@
 Console* console;
 
 // Instantiates the console, let's constructor handle the rest
-JNIEXPORT void JNICALL Java_ssuper_utils_Console_init(JNIEnv* env, jobject obj) {
+JNIEXPORT void JNICALL Java_jsuper_utils_Console_init(JNIEnv* env, jobject obj) {
 	console = new Console();
 }
 
-JNIEXPORT void JNICALL Java_ssuper_utils_Console_setCursorPosition(JNIEnv* env, jobject obj, jshort x, jshort y) {
+JNIEXPORT void JNICALL Java_jsuper_utils_Console_setCursorPosition(JNIEnv* env, jobject obj, jshort x, jshort y) {
 	console->setPosition(x, y);
 }
 
 // Creates a coordinate class and bypasses the access restrictions to set the X and Y coordinates of the cursor
-JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getCursorPosition(JNIEnv* env, jobject obj) {
-	jclass clazz = env->FindClass("ssuper/utils/Console$Coordinate");
-	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Lssuper/utils/Console;)V");
+JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getCursorPosition(JNIEnv* env, jobject obj) {
+	jclass clazz = env->FindClass("jsuper/utils/Console$Coordinate");
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Ljsuper/utils/Console;)V");
 	short x, y;
 	console->getPosition(x, y);
 	jobject instant = env->NewObject(clazz, constructorID, obj);
@@ -32,9 +32,9 @@ JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getCursorPosition(JNIEnv* en
 }
 
 // Creates a coordinate class and bypasses the access restrictions to set the viewable size of the console window
-JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getConsoleSize(JNIEnv* env, jobject obj) {
-	jclass clazz = env->FindClass("ssuper/utils/Console$Coordinate");
-	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Lssuper/utils/Console;)V");
+JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getConsoleSize(JNIEnv* env, jobject obj) {
+	jclass clazz = env->FindClass("jsuper/utils/Console$Coordinate");
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Ljsuper/utils/Console;)V");
 	short x, y;
 	console->getConsoleSize(x, y);
 	jobject instant = env->NewObject(clazz, constructorID, obj);
@@ -46,9 +46,9 @@ JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getConsoleSize(JNIEnv* env, 
 }
 
 // Creates a coordinate class and bypasses the access restrictions to set the first coordinate of the viewable console
-JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getFirstViewableCoordinate(JNIEnv* env, jobject obj) {
-	jclass clazz = env->FindClass("ssuper/utils/Console$Coordinate");
-	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Lssuper/utils/Console;)V");
+JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate(JNIEnv* env, jobject obj) {
+	jclass clazz = env->FindClass("jsuper/utils/Console$Coordinate");
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Ljsuper/utils/Console;)V");
 	short x, y;
 	console->getViewableCoordinate(x, y);
 	jobject instant = env->NewObject(clazz, constructorID, obj);

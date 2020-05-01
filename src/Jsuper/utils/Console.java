@@ -1,4 +1,4 @@
-package ssuper.utils;
+package jsuper.utils;
 
 // All native methods are private in case I decide to implement multi-console editing later on, keeping the handles away from the user
 

@@ -17,19 +17,19 @@ CC := g++
 ARGS := -shared
 
 #JAVA
-_JAVA_SRC_DIRS := ./src/Ssuper ./src/Ssuper/utils
+_JAVA_SRC_DIRS := ./src/Jsuper ./src/Jsuper/utils
 JAVA_SRC_FILES := $(foreach dir, $(_JAVA_SRC_DIRS), $(wildcard $(dir)/*.java))
 
-JAVA_OUT_DIR :=  ./out/Ssuper
+JAVA_OUT_DIR :=  ./out/Jsuper
 
 JAVAC_ARGS := -h $(_NATIVE_DIR)/inc
 
 all:
-	make Ssuper
+	make Jsuper
 	make native
 
 native:
 	$(CC) $(ARGS) $(INC_DIRS) $(SRC_FILES) -o $(TARGET_DIRECTORY)/$(TARGET_NAME).$(TARGET_EXTENSION)
 
-Ssuper:
+Jsuper:
 	javac  $(JAVA_SRC_FILES) -d $(JAVA_OUT_DIR) $(JAVAC_ARGS)

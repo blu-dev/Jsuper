@@ -1,6 +1,6 @@
-import ssuper.utils.Console;
+import jsuper.utils.Console;
 
-public class Ssuper {
+public class Jsuper {
 	public static void main(String[] args) {
 		Console myConsole = new Console();
 		Console.Coordinate size = myConsole.getSize();
