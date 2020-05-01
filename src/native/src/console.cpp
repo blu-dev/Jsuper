@@ -4,8 +4,11 @@
 
 #include <iostream>
 
+
+// Global console for us to interact with (will be implemented differently in the future)
 Console* console;
 
+// Instantiates the console, let's constructor handle the rest
 JNIEXPORT void JNICALL Java_ssuper_utils_Console_init(JNIEnv* env, jobject obj) {
 	console = new Console();
 }
@@ -14,19 +17,49 @@ JNIEXPORT void JNICALL Java_ssuper_utils_Console_setCursorPosition(JNIEnv* env, 
 	console->setPosition(x, y);
 }
 
+// Creates a coordinate class and bypasses the access restrictions to set the X and Y coordinates of the cursor
 JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getCursorPosition(JNIEnv* env, jobject obj) {
-	jclass cCursorPosition = env->FindClass("ssuper/utils/Console$CursorPosition");
-	jmethodID constructorID = env->GetMethodID(cCursorPosition, "<init>", "(Lssuper/utils/Console;)V");
+	jclass clazz = env->FindClass("ssuper/utils/Console$Coordinate");
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Lssuper/utils/Console;)V");
 	short x, y;
 	console->getPosition(x, y);
-	jobject oCursorPosition = env->NewObject(cCursorPosition, constructorID, obj);
-	jmethodID setX = env->GetMethodID(cCursorPosition, "setX", "(S)V");
-	jmethodID setY = env->GetMethodID(cCursorPosition, "setY", "(S)V");
-	env->CallVoidMethod(oCursorPosition, setX, x);
-	env->CallVoidMethod(oCursorPosition, setY, y);
-	return oCursorPosition;
+	jobject instant = env->NewObject(clazz, constructorID, obj);
+	jmethodID setX = env->GetMethodID(clazz, "setX", "(S)V");
+	jmethodID setY = env->GetMethodID(clazz, "setY", "(S)V");
+	env->CallVoidMethod(instant, setX, x);
+	env->CallVoidMethod(instant, setY, y);
+	return instant;
 }
 
+// Creates a coordinate class and bypasses the access restrictions to set the viewable size of the console window
+JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getConsoleSize(JNIEnv* env, jobject obj) {
+	jclass clazz = env->FindClass("ssuper/utils/Console$Coordinate");
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Lssuper/utils/Console;)V");
+	short x, y;
+	console->getConsoleSize(x, y);
+	jobject instant = env->NewObject(clazz, constructorID, obj);
+	jmethodID setX = env->GetMethodID(clazz, "setX", "(S)V");
+	jmethodID setY = env->GetMethodID(clazz, "setY", "(S)V");
+	env->CallVoidMethod(instant, setX, x);
+	env->CallVoidMethod(instant, setY, y);
+	return instant;
+}
+
+// Creates a coordinate class and bypasses the access restrictions to set the first coordinate of the viewable console
+JNIEXPORT jobject JNICALL Java_ssuper_utils_Console_getFirstViewableCoordinate(JNIEnv* env, jobject obj) {
+	jclass clazz = env->FindClass("ssuper/utils/Console$Coordinate");
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Lssuper/utils/Console;)V");
+	short x, y;
+	console->getViewableCoordinate(x, y);
+	jobject instant = env->NewObject(clazz, constructorID, obj);
+	jmethodID setX = env->GetMethodID(clazz, "setX", "(S)V");
+	jmethodID setY = env->GetMethodID(clazz, "setY", "(S)V");
+	env->CallVoidMethod(instant, setX, x);
+	env->CallVoidMethod(instant, setY, y);
+	return instant;
+}
+
+// Instantiates the private data of the Console class, fills it up
 Console::Console(void) {
 	mData = new pConsole;
 	mData->mInfo = new CONSOLE_SCREEN_BUFFER_INFO;
@@ -36,10 +69,12 @@ Console::Console(void) {
 	GetConsoleScreenBufferInfo(mData->mOutput, mData->mInfo);
 }
 
+// Frees private data of the Console class
 Console::~Console(void) {
 	delete mData->mInfo;
 	delete mData;
 }
+
 
 void Console::setPosition(short x, short y) {
 	COORD pos = {x, y};
@@ -49,7 +84,22 @@ void Console::setPosition(short x, short y) {
 void Console::getPosition(short& x, short& y) {
 	mData->update();
 	COORD pos = mData->mInfo->dwCursorPosition;
-	//std::cout << pos.X << " " << pos.Y << std::endl;
 	x = pos.X;
 	y = pos.Y;
+}
+
+// Gets the size of the console (minimum of 1)
+void Console::getConsoleSize(short& x, short& y) {
+	mData->update();
+	SMALL_RECT window = mData->mInfo->srWindow;
+	x = window.Right - window.Left + 1;
+	y = window.Bottom - window.Top + 1;
+}
+
+// Gets the top left coordinate of the console
+void Console::getViewableCoordinate(short& x, short& y) {
+	mData->update();
+	SMALL_RECT window = mData->mInfo->srWindow;
+	x = window.Left;
+	y = window.Top;
 }

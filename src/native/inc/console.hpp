@@ -17,6 +17,8 @@ public:
 
 	void setPosition(short x, short y);
 	void getPosition(short& x, short& y);
+	void getConsoleSize(short& x, short& y);
+	void getViewableCoordinate(short& x, short& y);
 };
 
 #endif
