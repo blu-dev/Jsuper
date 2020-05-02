@@ -1,68 +1,70 @@
+import java.util.ArrayList;
 import jsuper.utils.*;
 
 public class Jsuper {
-	private Console baseConsole;
+	// Private fields
 
-	private static Coordinate absoluteCoordinates(Coordinate relativePos, Coordinate start) {
-		return new Coordinate((short)(relativePos.getX() + start.getX()), (short)(relativePos.getY() + start.getY()));
+	private ArrayList<Console> consoles;
+
+	// Private methods
+
+	private static Coordinate absolute(Coordinate relative, Coordinate start) {
+		return new Coordinate((short)(relative.getX() + start.getX()), (short)(relative.getY() + start.getY()));
 	}
 
-	private static Coordinate relativeCoordinates(Coordinate absolutePos, Coordinate start) {
-		return new Coordinate((short)(absolutePos.getX() - start.getX()), (short)(absolutePos.getY() - start.getY()));
+	private static Coordinate relative(Coordinate absolute, Coordinate start) {
+		return new Coordinate((short)(absolute.getX() - start.getX()), (short)(absolute.getY() + start.getY()));
 	}
 
-	public boolean processInput(int input) {
-		boolean ret = true;
-		Coordinate start = baseConsole.getStart();
-		Coordinate curPos = relativeCoordinates(baseConsole.getCursor(), start);
-		short x = curPos.getX();
-		short y = curPos.getY();
-		if (input >= 0) {
-			baseConsole.out.print((char)(input));
-			x++;
-		}
-		else {
-			switch (input) {
-				case -1:
-					ret = false;
-					break;
-				case -100:
-					y--;
-					break;
-				case -101:
-					x--;
-					break;
-				case -102:
-					x++;
-					break;
-				case -103:
-					y++;
-					break;
+	private int nextAvailableConsole() {
+		int ret = consoles.size();
+		for (int i = 0; i < consoles.size(); i++) {
+			if (consoles.get(i).equals(null)) {
+				ret = i;
+				break;
 			}
 		}
-		baseConsole.setCursor(absoluteCoordinates(new Coordinate(x, y), start));
 		return ret;
 	}
 
-	private static Coordinate clamp(Coordinate pos, Coordinate bounds) {
-		short x = pos.getX();
-		short y = pos.getY();
-		if (x > bounds.getX())
-			x = bounds.getX();
-		if (y > bounds.getY())
-			y = bounds.getY();
-		return new Coordinate(x, y);
+	// Public methods
+
+	public Jsuper() {
+		consoles = new ArrayList<Console>();
 	}
 
-	public Jsuper() throws Exception {
-		baseConsole = new Console();
-	}
-
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Jsuper app = new Jsuper();
-		boolean cont = app.processInput(app.baseConsole.getNext());
-		while (cont) {
-			cont = app.processInput(app.baseConsole.getNext());
+		int handle = app.createConsole();
+		int handle2 = app.createConsole();
+		app.consoles.get(handle).out.println("world");
+		app.consoles.get(handle2).out.println("hello");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			System.err.println("InterruptedException Occurred: " + e.getMessage());
 		}
+		app.consoles.get(handle).show();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			System.err.println("InterruptedException Occurred: " + e.getMessage());
+		}
+		app.consoles.get(handle).terminate();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			System.err.println("InterruptedException Occurred: " + e.getMessage());
+		}
+		app.consoles.get(handle2).terminate();
+	}
+
+	public int createConsole() {
+		int handle = nextAvailableConsole();
+		if (handle == consoles.size())
+			consoles.add(new Console());
+		else
+			consoles.set(handle, new Console());
+		return handle;
 	}
 }

@@ -1,59 +1,69 @@
 package jsuper.utils;
 
 import java.io.PrintStream;
-// All native methods are private in case I decide to implement multi-console editing later on, keeping the handles away from the user
 
 public class Console {
+	// Native functions
+
+	private static native int readRawInput();
 	private native PrintStream init();
-	private native void setCursorPosition(short x, short y);
+	private native void close();
+	private native void focus();
 	private native Coordinate getCursorPosition();
 	private native Coordinate getConsoleSize();
-	private native Coordinate getFirstViewableCoordinate();
-	private static native int readRawInput();
+	private native Coordinate getStartCoordinate();
+	private native void setCursorPosition(short x, short y);
 
+	// Private fields
+
+	private int nativeHandle;
 	private Coordinate cursorPosition;
 	private Coordinate size;
 	private Coordinate startPosition;
 
+	// Private methods
+
 	private void update() {
-		setCursorPosition(cursorPosition.getX(), cursorPosition.getY());
+
 	}
+
+	// Public fields
 
 	public PrintStream out;
 
-	public static int getNext() {
-		return readRawInput();
-	}
+	// Public methods
 
-	public Console() throws Exception {
+	public Console() {
 		out = init();
 		query();
+	}
+
+	public void show() {
+		focus();
 	}
 
 	public void query() {
 		cursorPosition = getCursorPosition();
 		size = getConsoleSize();
-		startPosition = getFirstViewableCoordinate();
+		startPosition = getStartCoordinate();
+	}
+
+	public void terminate() {
+		close();
+		nativeHandle = -1;
 	}
 
 	public void setCursor(Coordinate pos) {
-		cursorPosition = pos;
-		update();
+		setCursorPosition(pos.getX(), pos.getY());
 	}
 
-	public Coordinate getCursor() {
-		return cursorPosition;
-	}
-
-	public Coordinate getSize() {
-		return size;
-	}
-
-	public Coordinate getStart() {
-		return startPosition;
-	}
+	public Coordinate getCursor() { return cursorPosition; }
+	public Coordinate getSize() { return size; }
+	public Coordinate getStart() { return startPosition; }
 
 	static {
 		System.loadLibrary("native");
 	}
+
+
 }

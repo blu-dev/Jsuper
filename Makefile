@@ -1,8 +1,10 @@
 # JAVA_HOME is set to C:\Java\jdk-14.0.1 for me and MINGW64_HOME is set to C:\MinGW\mingw64 for me
 # Also, I'm doing this in Makefile because my IDE's aren't very fond of doing native C++ implementation (understandably)
 # NATIVE
+PLATFORM := win
+
 _NATIVE_DIR := ./src/native
-_SRC_DIRS := $(_NATIVE_DIR)/src
+_SRC_DIRS := $(_NATIVE_DIR)/src/$(PLATFORM) $(_NATIVE_DIR)/src/$(PLATFORM)/jimpl
 SRC_FILES := $(foreach dir, $(_SRC_DIRS), $(wildcard $(dir)/*.cpp))
 
 _LOCAL_INC_DIRS := $(_NATIVE_DIR)/inc

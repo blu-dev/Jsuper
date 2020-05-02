@@ -15,10 +15,16 @@ public:
 
 	~Console(void);
 
-	void setPosition(short x, short y);
-	void getPosition(short& x, short& y);
-	void getConsoleSize(short& x, short& y);
-	void getViewableCoordinate(short& x, short& y);
+	static void showDefault(void);
+
+	void show(void);
+	void unfocus(void);
+	
+	void setCursor(short x, short y);
+	bool getFocus(void);
+	void getCursor(short* x, short* y);
+	void getSize(short* x, short* y);
+	void getStart(short* x, short* y);
 };
 
 #endif

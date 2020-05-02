@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     jsuper_utils_Console
+ * Method:    readRawInput
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jsuper_utils_Console_readRawInput
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     jsuper_utils_Console
  * Method:    init
  * Signature: ()Ljava/io/PrintStream;
  */
@@ -17,11 +25,19 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_init
 
 /*
  * Class:     jsuper_utils_Console
- * Method:    setCursorPosition
- * Signature: (SS)V
+ * Method:    close
+ * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_jsuper_utils_Console_setCursorPosition
-  (JNIEnv *, jobject, jshort, jshort);
+JNIEXPORT void JNICALL Java_jsuper_utils_Console_close
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jsuper_utils_Console
+ * Method:    focus
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_jsuper_utils_Console_focus
+  (JNIEnv *, jobject);
 
 /*
  * Class:     jsuper_utils_Console
@@ -41,19 +57,19 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getConsoleSize
 
 /*
  * Class:     jsuper_utils_Console
- * Method:    getFirstViewableCoordinate
+ * Method:    getStartCoordinate
  * Signature: ()Ljsuper/utils/Coordinate;
  */
-JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate
+JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getStartCoordinate
   (JNIEnv *, jobject);
 
 /*
  * Class:     jsuper_utils_Console
- * Method:    readRawInput
- * Signature: ()I
+ * Method:    setCursorPosition
+ * Signature: (SS)V
  */
-JNIEXPORT jint JNICALL Java_jsuper_utils_Console_readRawInput
-  (JNIEnv *, jclass);
+JNIEXPORT void JNICALL Java_jsuper_utils_Console_setCursorPosition
+  (JNIEnv *, jobject, jshort, jshort);
 
 #ifdef __cplusplus
 }
