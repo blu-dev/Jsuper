@@ -16,13 +16,9 @@ JNIEXPORT void JNICALL Java_jsuper_utils_Console_test(JNIEnv* env, jobject obj) 
 // Instantiates the console, let's constructor handle the rest
 JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_init(JNIEnv* env, jobject obj) {
 	console = new Console();
-	std::cout << "the" << std::endl;
 	jclass clazz = env->FindClass("java/io/PrintStream");
-	std::cout << "help" << std::endl;
 	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Ljava/lang/String;)V");
-	std::cout << "bruh" << std::endl;
 	jobject instant = env->NewObject(clazz, constructorID, env->NewStringUTF("CONOUT$"));
-	std::cout << "4" << std::endl;
 	return instant;
 }
 
