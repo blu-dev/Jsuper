@@ -37,7 +37,7 @@ all:
 	make native
 
 native:
-	mkdir $(subst /,\, $(TARGET_DIRECTORY))
+	@if not exist $(subst /,\, $(TARGET_DIRECTORY)) mkdir $(subst /,\, $(TARGET_DIRECTORY))
 	$(CC) $(ARGS) $(INC_DIRS) $(SRC_FILES) -o $(TARGET_DIRECTORY)/$(TARGET_NAME).$(TARGET_EXTENSION)
 
 Jsuper:
@@ -47,4 +47,6 @@ clean:
 	clean
 
 jar: 
+	@if not exist .\\bin mkdir .\\bin
 	cd $(JAVA_OUT_DIR) && jar cmvf ../../Manifest.mf ../../$(JAR_DIR)/$(JAR_NAME).jar $(JAVA_CLS_FILES) 
+	@copy $(subst /,\, $(TARGET_DIRECTORY))\\$(TARGET_NAME).$(TARGET_EXTENSION) $(JAR_DIR)\\$(TARGET_NAME).$(TARGET_EXTENSION)
