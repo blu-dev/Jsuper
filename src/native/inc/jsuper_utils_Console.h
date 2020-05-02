@@ -10,9 +10,9 @@ extern "C" {
 /*
  * Class:     jsuper_utils_Console
  * Method:    init
- * Signature: ()V
+ * Signature: ()Ljava/io/PrintStream;
  */
-JNIEXPORT void JNICALL Java_jsuper_utils_Console_init
+JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_init
   (JNIEnv *, jobject);
 
 /*

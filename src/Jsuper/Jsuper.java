@@ -17,18 +17,21 @@ public class Jsuper {
 		return new Coordinate(x, y);
 	}
 
-	public Jsuper() {
+	public Jsuper() throws Exception {
 		baseConsole = new Console();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Jsuper app = new Jsuper();
 		Coordinate start = app.baseConsole.getStart();
+		app.baseConsole.out.println(start.getX() + ' ' + start.getY());
 		for (short i = 0; i < 50; i++) {
 			for (short j = 0; j < 50; j++) {
 				app.baseConsole.setCursor(absoluteCoordinates(new Coordinate(j, i), start));
-				System.out.print(' ');
+				app.baseConsole.out.print('h');
+				Thread.sleep(20);
 			}
 		}
+		Thread.sleep(5000);
 	}
 }

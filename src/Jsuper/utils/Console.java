@@ -1,9 +1,10 @@
 package jsuper.utils;
 
+import java.io.PrintStream;
 // All native methods are private in case I decide to implement multi-console editing later on, keeping the handles away from the user
 
 public class Console {
-	private native void init();
+	private native PrintStream init();
 	private native void setCursorPosition(short x, short y);
 	private native Coordinate getCursorPosition();
 	private native Coordinate getConsoleSize();
@@ -17,8 +18,10 @@ public class Console {
 		setCursorPosition(cursorPosition.getX(), cursorPosition.getY());
 	}
 
-	public Console() {
-		init();
+	public PrintStream out;
+
+	public Console() throws Exception {
+		out = init();
 		query();
 	}
 

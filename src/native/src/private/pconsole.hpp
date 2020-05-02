@@ -6,6 +6,7 @@
 class Console;
 
 struct pConsole {
+	HANDLE mScreenBuffer;
 	HANDLE mInput;
 	HANDLE mOutput;
 	HANDLE mError;

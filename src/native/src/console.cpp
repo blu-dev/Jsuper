@@ -8,9 +8,22 @@
 // Global console for us to interact with (will be implemented differently in the future)
 Console* console;
 
+JNIEXPORT void JNICALL Java_jsuper_utils_Console_test(JNIEnv* env, jobject obj) {
+	HANDLE newOutput = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE ,  FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	SetConsoleActiveScreenBuffer(newOutput);
+}
+
 // Instantiates the console, let's constructor handle the rest
-JNIEXPORT void JNICALL Java_jsuper_utils_Console_init(JNIEnv* env, jobject obj) {
+JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_init(JNIEnv* env, jobject obj) {
 	console = new Console();
+	std::cout << "the" << std::endl;
+	jclass clazz = env->FindClass("java/io/PrintStream");
+	std::cout << "help" << std::endl;
+	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(Ljava/lang/String;)V");
+	std::cout << "bruh" << std::endl;
+	jobject instant = env->NewObject(clazz, constructorID, env->NewStringUTF("CONOUT$"));
+	std::cout << "4" << std::endl;
+	return instant;
 }
 
 JNIEXPORT void JNICALL Java_jsuper_utils_Console_setCursorPosition(JNIEnv* env, jobject obj, jshort x, jshort y) {
@@ -23,7 +36,7 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getCursorPosition(JNIEnv* en
 	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "()V");
 	short x, y;
 	console->getPosition(x, y);
-	jobject instant = env->NewObject(clazz, constructorID, obj);
+	jobject instant = env->NewObject(clazz, constructorID);
 	jmethodID setX = env->GetMethodID(clazz, "setX", "(S)V");
 	jmethodID setY = env->GetMethodID(clazz, "setY", "(S)V");
 	env->CallVoidMethod(instant, setX, x);
@@ -37,7 +50,7 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getConsoleSize(JNIEnv* env, 
 	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "()V");
 	short x, y;
 	console->getConsoleSize(x, y);
-	jobject instant = env->NewObject(clazz, constructorID, obj);
+	jobject instant = env->NewObject(clazz, constructorID);
 	jmethodID setX = env->GetMethodID(clazz, "setX", "(S)V");
 	jmethodID setY = env->GetMethodID(clazz, "setY", "(S)V");
 	env->CallVoidMethod(instant, setX, x);
@@ -51,7 +64,7 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate(J
 	jmethodID constructorID = env->GetMethodID(clazz, "<init>", "()V");
 	short x, y;
 	console->getViewableCoordinate(x, y);
-	jobject instant = env->NewObject(clazz, constructorID, obj);
+	jobject instant = env->NewObject(clazz, constructorID);
 	jmethodID setX = env->GetMethodID(clazz, "setX", "(S)V");
 	jmethodID setY = env->GetMethodID(clazz, "setY", "(S)V");
 	env->CallVoidMethod(instant, setX, x);
@@ -63,8 +76,10 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate(J
 Console::Console(void) {
 	mData = new pConsole;
 	mData->mInfo = new CONSOLE_SCREEN_BUFFER_INFO;
+	mData->mScreenBuffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	SetConsoleActiveScreenBuffer(mData->mScreenBuffer);
 	mData->mInput = GetStdHandle(STD_INPUT_HANDLE);
-	mData->mOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	mData->mOutput = mData->mScreenBuffer;
 	mData->mError = GetStdHandle(STD_ERROR_HANDLE);
 	GetConsoleScreenBufferInfo(mData->mOutput, mData->mInfo);
 }
