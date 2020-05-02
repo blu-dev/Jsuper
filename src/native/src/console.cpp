@@ -68,6 +68,46 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate(J
 	return instant;
 }
 
+JNIEXPORT jint JNICALL Java_jsuper_utils_Console_readRawInput(JNIEnv* env, jclass obj) {
+	int ret = _getwch();
+	if (ret == 0) {
+		bool breakFlag = false;
+		ret = _getwch();
+		for (int i = 0x3B; i < 0x45; i++) {
+			ret = (ret == i) ? -(i - 0x3A) : ret;
+			if (ret < 0) {
+				breakFlag = true;
+				break;
+			}
+		}
+		if (!breakFlag) {
+			if (ret == 0x85)
+				ret = -11;
+			else if (ret = 0x86)
+				ret = -12;
+		}
+	}
+	else if (ret == 0xE0) {
+		// TODO: Add support for home, end, pg down, paeg up, insert, and delete using for loop
+		ret = _getwch();
+		switch (ret) {
+			case 0x48:
+				ret = -100;
+				break;
+			case 0x4B:
+				ret = -101;
+				break;
+			case 0x4D:
+				ret = -102;
+				break;
+			case 0x50:
+				ret = -103;
+				break;
+		}
+	}
+	return ret;
+}
+
 // Instantiates the private data of the Console class, fills it up
 Console::Console(void) {
 	mData = new pConsole;

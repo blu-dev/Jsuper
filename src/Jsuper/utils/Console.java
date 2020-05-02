@@ -9,6 +9,7 @@ public class Console {
 	private native Coordinate getCursorPosition();
 	private native Coordinate getConsoleSize();
 	private native Coordinate getFirstViewableCoordinate();
+	private static native int readRawInput();
 
 	private Coordinate cursorPosition;
 	private Coordinate size;
@@ -19,6 +20,10 @@ public class Console {
 	}
 
 	public PrintStream out;
+
+	public static int getNext() {
+		return readRawInput();
+	}
 
 	public Console() throws Exception {
 		out = init();

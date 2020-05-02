@@ -7,6 +7,43 @@ public class Jsuper {
 		return new Coordinate((short)(relativePos.getX() + start.getX()), (short)(relativePos.getY() + start.getY()));
 	}
 
+	private static Coordinate relativeCoordinates(Coordinate absolutePos, Coordinate start) {
+		return new Coordinate((short)(absolutePos.getX() - start.getX()), (short)(absolutePos.getY() - start.getY()));
+	}
+
+	public boolean processInput(int input) {
+		boolean ret = true;
+		Coordinate start = baseConsole.getStart();
+		Coordinate curPos = relativeCoordinates(baseConsole.getCursor(), start);
+		short x = curPos.getX();
+		short y = curPos.getY();
+		if (input >= 0) {
+			baseConsole.out.print((char)(input));
+			x++;
+		}
+		else {
+			switch (input) {
+				case -1:
+					ret = false;
+					break;
+				case -100:
+					y--;
+					break;
+				case -101:
+					x--;
+					break;
+				case -102:
+					x++;
+					break;
+				case -103:
+					y++;
+					break;
+			}
+		}
+		baseConsole.setCursor(absoluteCoordinates(new Coordinate(x, y), start));
+		return ret;
+	}
+
 	private static Coordinate clamp(Coordinate pos, Coordinate bounds) {
 		short x = pos.getX();
 		short y = pos.getY();
@@ -23,15 +60,9 @@ public class Jsuper {
 
 	public static void main(String[] args) throws Exception {
 		Jsuper app = new Jsuper();
-		Coordinate start = app.baseConsole.getStart();
-		app.baseConsole.out.println(start.getX() + ' ' + start.getY());
-		for (short i = 0; i < 50; i++) {
-			for (short j = 0; j < 50; j++) {
-				app.baseConsole.setCursor(absoluteCoordinates(new Coordinate(j, i), start));
-				app.baseConsole.out.print('h');
-				Thread.sleep(20);
-			}
+		boolean cont = app.processInput(app.baseConsole.getNext());
+		while (cont) {
+			cont = app.processInput(app.baseConsole.getNext());
 		}
-		Thread.sleep(5000);
 	}
 }

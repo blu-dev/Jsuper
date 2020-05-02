@@ -47,6 +47,14 @@ JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getConsoleSize
 JNIEXPORT jobject JNICALL Java_jsuper_utils_Console_getFirstViewableCoordinate
   (JNIEnv *, jobject);
 
+/*
+ * Class:     jsuper_utils_Console
+ * Method:    readRawInput
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jsuper_utils_Console_readRawInput
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif
