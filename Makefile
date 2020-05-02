@@ -23,6 +23,12 @@ _JAVA_SRC_DIRS := ./src/Jsuper ./src/Jsuper/utils ./src/Jsuper/utils/actions
 JAVA_SRC_FILES := $(foreach dir, $(_JAVA_SRC_DIRS), $(wildcard $(dir)/*.java))
 
 JAVA_OUT_DIR :=  ./out/Jsuper
+_JAVA_CLS_DIRS := $(JAVA_OUT_DIR) $(JAVA_OUT_DIR)/jsuper $(JAVA_OUT_DIR)/jsuper/utils $(JAVA_OUT_DIR)/jsuper/utils/actions
+_JAVA_CLS_FILES := $(foreach dir, $(_JAVA_CLS_DIRS), $(wildcard $(dir)/*.class))
+JAVA_CLS_FILES := $(patsubst $(JAVA_OUT_DIR)%, .%, $(_JAVA_CLS_FILES))
+
+JAR_DIR := bin
+JAR_NAME := Jsuper
 
 JAVAC_ARGS := -h $(_NATIVE_DIR)/inc
 
@@ -31,7 +37,14 @@ all:
 	make native
 
 native:
+	mkdir $(subst /,\, $(TARGET_DIRECTORY))
 	$(CC) $(ARGS) $(INC_DIRS) $(SRC_FILES) -o $(TARGET_DIRECTORY)/$(TARGET_NAME).$(TARGET_EXTENSION)
 
 Jsuper:
 	javac  $(JAVA_SRC_FILES) -d $(JAVA_OUT_DIR) $(JAVAC_ARGS)
+
+clean:
+	clean
+
+jar: 
+	cd $(JAVA_OUT_DIR) && jar cmvf ../../Manifest.mf ../../$(JAR_DIR)/$(JAR_NAME).jar $(JAVA_CLS_FILES) 
