@@ -60,6 +60,7 @@ public class Console {
 	public Coordinate getCursor() { return cursorPosition; }
 	public Coordinate getSize() { return size; }
 	public Coordinate getStart() { return startPosition; }
+	public int getInput() { return readRawInput(); }
 
 	static {
 		System.loadLibrary("native");

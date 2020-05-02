@@ -4,6 +4,7 @@
 #include "..\private\pconsole.hpp"
 
 #include <vector>
+#include <iostream>
 
 std::vector<Console*>* consoles;
 
@@ -16,8 +17,8 @@ jobject createCoordinate(JNIEnv* env, short x, short y);
 
 JNIEXPORT jint JNICALL Java_jsuper_utils_Console_readRawInput(JNIEnv* env, jclass cls) {
 	int ret = _getwch();
-	if (ret == 0 || ret == 0xE0) { // Getting some function keys and/or numpad input
-		ret == _getwch();
+	if (ret == 0 || ret == 0xE0) {
+		ret = _getwch();
 		testFunctionKeys(&ret);
 		if (ret > 0)
 			testNavigationKeys(&ret);
@@ -128,7 +129,7 @@ void updateFocus(int exclude) {
 void testFunctionKeys(int* val) {
 	bool breakFlag = false;
 	for (int i = 0x3B; i < 0x45; i++) {
-		*val = (*val = i) ? -(i - 0x3A) : *val;
+		*val = (*val == i) ? -(i - 0x3A) : *val;
 		if (*val < 0) {
 			breakFlag = true;
 			break;
@@ -138,7 +139,7 @@ void testFunctionKeys(int* val) {
 		if (*val == 0x85) {
 			*val = -11;
 			breakFlag = true;
-		} else if (*val = 0x86) {
+		} else if (*val == 0x86) {
 			*val = -12;
 			breakFlag = true;
 		}
@@ -147,7 +148,7 @@ void testFunctionKeys(int* val) {
 
 void testNavigationKeys(int* val) {
 	for (int i = 0x47; i < 0x54; i++) {
-		*val = (*val = i) ? (-i - 0x46) : *val;
+		*val = (*val == i) ? -(i - 0x46) - 100 : *val;
 		if (*val < 0) {
 			break;
 		}

@@ -19,7 +19,7 @@ CC := g++
 ARGS := -shared
 
 #JAVA
-_JAVA_SRC_DIRS := ./src/Jsuper ./src/Jsuper/utils
+_JAVA_SRC_DIRS := ./src/Jsuper ./src/Jsuper/utils ./src/Jsuper/utils/actions
 JAVA_SRC_FILES := $(foreach dir, $(_JAVA_SRC_DIRS), $(wildcard $(dir)/*.java))
 
 JAVA_OUT_DIR :=  ./out/Jsuper

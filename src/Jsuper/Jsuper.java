@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import jsuper.utils.*;
+import jsuper.utils.actions.*;
 
 public class Jsuper {
 	// Private fields
 
 	private ArrayList<Console> consoles;
+	private ArrayList<Action> consoleActions;
 
 	// Private methods
 
@@ -31,32 +33,27 @@ public class Jsuper {
 
 	public Jsuper() {
 		consoles = new ArrayList<Console>();
+		consoleActions = new ArrayList<Action>();
+		consoleActions.add(new Redirection(-102, null, (short)0, (short)-1)); // up arrow
+		consoleActions.add(new Redirection(-110, null, (short)0, (short)1)); // down arrow
+		consoleActions.add(new Redirection(-107, null, (short)1, (short)0)); // right arrow
+		consoleActions.add(new Redirection(-105, null, (short)-1, (short)0)); // left arrow
 	}
 
 	public static void main(String[] args) {
 		Jsuper app = new Jsuper();
-		int handle = app.createConsole();
-		int handle2 = app.createConsole();
-		app.consoles.get(handle).out.println("world");
-		app.consoles.get(handle2).out.println("hello");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			System.err.println("InterruptedException Occurred: " + e.getMessage());
+		// This is test code for handling multiple tabs in an order. 
+		ArrayList<Integer> handles = new ArrayList<Integer>();
+
+		handles.add(app.createConsole());
+		Console activeConsole = app.consoles.get(handles.get(0));
+		app.linkActions(activeConsole);
+		boolean cont = app.processInput(activeConsole.getInput(), activeConsole);
+
+		while (cont) {
+			activeConsole.query();
+			cont = app.processInput(activeConsole.getInput(), activeConsole);
 		}
-		app.consoles.get(handle).show();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			System.err.println("InterruptedException Occurred: " + e.getMessage());
-		}
-		app.consoles.get(handle).terminate();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			System.err.println("InterruptedException Occurred: " + e.getMessage());
-		}
-		app.consoles.get(handle2).terminate();
 	}
 
 	public int createConsole() {
@@ -66,5 +63,31 @@ public class Jsuper {
 		else
 			consoles.set(handle, new Console());
 		return handle;
+	}
+
+	public boolean processInput(int input, Console activeConsole) {
+		boolean breakFlag = false;
+		boolean ret = true;
+		for (Action a : consoleActions) {
+			if (a.isThisAction(input)) {
+				a.perform();
+				breakFlag = true;
+				break;
+			}
+		}
+		if (input == (int)('q')) {
+			ret = false;
+			breakFlag = true;
+		}
+		if (!breakFlag) {
+			activeConsole.out.print((char)input);
+		}
+		return ret;
+	}
+
+	public void linkActions(Console link) {
+		for (Action a : consoleActions) {
+			a.linkConsole(link);
+		}
 	}
 }
